@@ -1,26 +1,10 @@
-# ---------- Builder ----------
-FROM node:18-alpine AS builder
-WORKDIR /app
+FROM node:18-alpine
 
-COPY package*.json ./
-RUN npm install
+WORKDIR /app
 
 COPY . .
+RUN npm install
 RUN npm run build
-
-# ---------- Runner ----------
-FROM node:18-alpine AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-
-COPY package*.json ./
-RUN npm install --omit=dev
-
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/next.config.* ./
-COPY --from=builder /app/package.json ./
 
 EXPOSE 3000
 CMD ["npm", "start"]
