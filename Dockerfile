@@ -25,4 +25,4 @@ COPY --from=builder /app/next.config.* ./
 COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npx next start -H 0.0.0.0 -p 3000"]
